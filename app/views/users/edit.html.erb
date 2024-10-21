@@ -1,0 +1,18 @@
+<h1>Edit Profile</h1>
+<%= form_for(@user) do |f| %>
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+  <div>
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+  <div>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+  <div>
+    <%= f.submit "Update" %>
+  </div>
+<% end %>
