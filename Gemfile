@@ -61,3 +61,7 @@ end
 gem "devise", "~> 4.9"
 
 gem "pundit", "~> 2.4"
+
+gem "kaminari", "~> 1.2"
+
+gem "rack-attack", "~> 6.7"
