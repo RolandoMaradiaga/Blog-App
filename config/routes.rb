@@ -5,8 +5,22 @@ Rails.application.routes.draw do
   # Ensure resourceful routes for users
   resources :users, only: [:show, :edit, :update]
 
+  resources :posts do
+    resources :comments, only: [:create, :edit, :update, :destroy]
+  end
+
   get "home/index"
   root "home#index"
+
+  namespace :api do
+    namespace :v1 do
+      resources :posts, only: [:index, :show, :create, :update, :destroy]
+      # If you plan to implement comments, you could add:
+      # resources :posts do
+      #   resources :comments, only: [:index, :create]
+      # end
+    end
+  end
 
   # Additional routes
   get "up" => "rails/health#show", as: :rails_health_check

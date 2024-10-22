@@ -1,0 +1,26 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.body %></p>
+<p>By <%= @post.user.email %></p>
+
+<% if @post.user == current_user %>
+  <%= link_to 'Edit', edit_post_path(@post) %> |
+  <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
+
+<h2>Comments</h2>
+<% @post.comments.each do |comment| %>
+  <p><%= comment.body %></p>
+  <p>By <%= comment.user.email %></p>
+  <% if comment.user == current_user %>
+    <%= link_to 'Edit', edit_post_comment_path(@post, comment) %> |
+    <%= link_to 'Delete', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+<% end %>
+
+<%= form_with(model: [@post, Comment.new]) do |f| %>
+  <div>
+    <%= f.label :body, "Add a Comment" %><br>
+    <%= f.text_area :body %>
+  </div>
+  <%= f.submit "Submit" %>
+<% end %>
