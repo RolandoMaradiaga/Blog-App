@@ -5,9 +5,9 @@ class PostsController < ApplicationController
 
   def index
     if params[:query].present?
-      @posts = Post.search_by_title_and_body(params[:query])
+      @posts = Post.search_by_title_and_body(params[:query]).page(params[:page]).per(10)
     else
-      @posts = Post.all
+      @posts = Post.page(params[:page]).per(10)
     end
   end
 

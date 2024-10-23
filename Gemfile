@@ -60,6 +60,8 @@ end
 
 gem 'aws-sdk-s3', require: false
 
+gem 'bullet'
+
 gem 'dotenv-rails', groups: [:development, :test]
 
 gem 'sidekiq'
