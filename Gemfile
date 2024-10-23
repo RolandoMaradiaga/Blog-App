@@ -60,6 +60,8 @@ end
 
 gem 'sidekiq'
 
+gem 'redis'
+
 gem 'pg_search'
 
 gem "devise", "~> 4.9"

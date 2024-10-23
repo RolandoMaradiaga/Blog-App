@@ -20,11 +20,12 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
+      Rails.cache.delete_matched("views/posts/*")
       redirect_to @post, notice: 'Post was successfully created.'
     else
       render :new
     end
-  end
+end
 
   def edit
     redirect_to posts_path, alert: 'Not authorized' unless @post.user == current_user
