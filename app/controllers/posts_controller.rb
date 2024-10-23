@@ -1,17 +1,18 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
     if params[:query].present?
-      @posts = Post.search_by_title_and_body(params[:query]).page(params[:page]).per(10)
+      @posts = Post.includes(:user).search_by_title_and_body(params[:query]).page(params[:page]).per(10)
     else
-      @posts = Post.page(params[:page]).per(10)
+      @posts = Post.includes(:user).page(params[:page]).per(10)
     end
   end
 
   def show
+    @post = Post.includes(:user, comments: :user).find(params[:id])
   end
 
   def new
@@ -31,7 +32,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    authorize @post
+     authorize @post, :edit?
   end
 
   def update

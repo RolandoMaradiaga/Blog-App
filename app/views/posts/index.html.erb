@@ -24,7 +24,6 @@
   <% end %>
 
   <% @posts.each do |post| %>
-    <% cache(post) do %>
       <div class="card mb-3">
         <div class="card-body">
           <h2 class="card-title"><%= link_to post.title, post, class: 'text-decoration-none' %></h2>
@@ -38,7 +37,6 @@
           <% end %>
         </div>
       </div>
-    <% end %>
   <% end %>
   
   <%= paginate @posts %>

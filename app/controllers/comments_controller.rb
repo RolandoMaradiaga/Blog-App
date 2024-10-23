@@ -7,6 +7,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     authorize @comment
     if @comment.save
+      CommentNotificationJob.perform_later(@comment)
       redirect_to @post, notice: 'Comment was successfully added.'
     else
       redirect_to @post, alert: 'Unable to add comment.'

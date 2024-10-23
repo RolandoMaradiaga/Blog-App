@@ -1,5 +1,9 @@
 class PostPolicy < ApplicationPolicy
   def update?
+    edit?
+  end
+
+  def edit?
     user.author? && record.user == user
   end
 
