@@ -5,9 +5,8 @@ class CommentsController < ApplicationController
   def create
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
+    authorize @comment
     if @comment.save
-      #Trigger background job to send email notification
-      CommentNotificationJob.perform_later(@comment)
       redirect_to @post, notice: 'Comment was successfully added.'
     else
       redirect_to @post, alert: 'Unable to add comment.'
@@ -30,12 +29,9 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = @post.comments.find(params[:id])
-    if @comment.user == current_user
-      @comment.destroy
-      redirect_to @post, notice: 'Comment was successfully deleted.'
-    else
-      redirect_to @post, alert: 'Not authorized'
-    end
+    authorize @comment
+    @comment.destroy
+    redirect_to @post, notice: 'Comment was successfully deleted.'
   end
 
   private
