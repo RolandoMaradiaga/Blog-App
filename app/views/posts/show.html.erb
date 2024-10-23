@@ -2,6 +2,10 @@
 <p><%= @post.body %></p>
 <p>By <%= @post.user.email %></p>
 
+<% if @post.image.attached? %>
+  <%= image_tag url_for(@post.image) %>
+<% end %>
+
 <% if @post.user == current_user %>
   <%= link_to 'Edit', edit_post_path(@post) %> |
   <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %>
