@@ -30,9 +30,13 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = @post.comments.find(params[:id])
-    authorize @comment
-    @comment.destroy
-    redirect_to @post, notice: 'Comment was successfully deleted.'
+    begin
+      authorize @comment
+      @comment.destroy
+      redirect_to @post, notice: 'Comment was successfully deleted.'
+    rescue Pundit::NotAuthorizedError
+      redirect_to @post, alert: 'Not authorized to delete this comment.'
+    end
   end
 
   private

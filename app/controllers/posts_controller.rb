@@ -32,12 +32,13 @@ class PostsController < ApplicationController
   end
 
   def edit
-     authorize @post, :edit?
+    authorize @post, :edit?
   end
 
   def update
     authorize @post
     if @post.update(post_params)
+      Rails.cache.delete_matched("views/posts/*")
       redirect_to @post, notice: 'Post was successfully updated.'
     else
       render :edit
@@ -47,6 +48,7 @@ class PostsController < ApplicationController
   def destroy
     authorize @post
     @post.destroy
+    Rails.cache.delete_matched("views/posts/*")
     redirect_to posts_path, notice: 'Post was successfully deleted.'
   end
 

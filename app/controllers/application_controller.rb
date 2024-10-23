@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Include Pundit for authorization
-  include Pundit
+  include Pundit::Authorization
 
   # Rescue Pundit errors
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
-  mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 
   # Ensure resourceful routes for users
   resources :users, only: [:show, :edit, :update]

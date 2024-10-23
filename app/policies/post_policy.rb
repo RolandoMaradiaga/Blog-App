@@ -22,4 +22,5 @@ class PostPolicy < ApplicationPolicy
   def show?
     true # Everyone can view individual posts
   end
+  
 end

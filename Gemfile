@@ -46,16 +46,23 @@ group :development, :test do
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
+  gem 'web-console'
   gem 'letter_opener'
   gem 'letter_opener_web'
+  gem 'rspec-rails'
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'database_cleaner-active_record' 
+  gem 'rails-controller-testing'
+  gem 'webmock'
+  gem 'vcr'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'shoulda-matchers', '~> 5.0'
 end
 
 gem 'aws-sdk-s3', require: false
