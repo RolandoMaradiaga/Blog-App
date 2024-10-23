@@ -58,6 +58,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem 'sidekiq'
+
 gem 'pg_search'
 
 gem "devise", "~> 4.9"

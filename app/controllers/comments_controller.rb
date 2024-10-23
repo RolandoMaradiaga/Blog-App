@@ -6,6 +6,8 @@ class CommentsController < ApplicationController
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
     if @comment.save
+      #Trigger background job to send email notification
+      CommentNotificationJob.perform_later(@comment)
       redirect_to @post, notice: 'Comment was successfully added.'
     else
       redirect_to @post, alert: 'Unable to add comment.'
