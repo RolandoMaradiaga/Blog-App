@@ -1,45 +1,60 @@
-<div class="container-fluid px-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>All Posts</h1>
-    <% if user_signed_in? %>
-      <div>
-        <%= link_to 'Create New Post', new_post_path, class: 'btn btn-success me-2' %>
-        <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-outline-primary me-2' %>
-        <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'btn btn-outline-danger' %>
+<div class="container d-flex flex-column align-items-center">
+  <div class="w-100 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="text-center w-100">All Posts</h1>
+    </div>
+
+    <div class="row w-75 mx-auto mb-4">
+      <div class="col-md-8">
+        <%= form_with(url: posts_path, method: :get, local: true, class: 'd-flex') do %>
+          <div class="input-group w-100">
+            <%= text_field_tag :query, params[:query], class: 'form-control', placeholder: 'Search posts...' %>
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+          </div>
+        <% end %>
       </div>
-    <% else %>
-      <div>
-        <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-outline-primary me-2' %>
-        <%= link_to 'Log In', new_user_session_path, class: 'btn btn-primary' %>
+      <div class="col-md-4 d-flex justify-content-end">
+        <% if user_signed_in? %>
+          <div class="d-flex">
+            <%= link_to 'Create New Post', new_post_path, class: 'btn btn-success me-2' %>
+            <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-outline-primary me-2' %>
+            <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'btn btn-outline-danger' %>
+          </div>
+        <% else %>
+          <div class="d-flex">
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-outline-primary me-2' %>
+            <%= link_to 'Log In', new_user_session_path, class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% @posts.each_with_index do |post, index| %>
+      <div class="w-75">
+        <div class="card mb-3">
+          <% cache([post, current_user.id]) do %> 
+            <div class="card-body">
+              <h2 class="card-title"><%= link_to post.title, post, class: 'text-decoration-none' %></h2>
+              <p class="card-text"><%= post.body.truncate(100) %></p>
+              <p class="card-subtitle text-muted">By <%= post.user.email %></p>
+            </div>
+          <% end %>
+
+          <% if post.user == current_user %>
+            <div class="card-footer text-end">
+              <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-warning btn-sm me-2' %>
+              <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            </div>
+          <% end %>
+        </div>
+        <% if index < @posts.size - 1 %>
+          <hr class="w-75 my-4">
+        <% end %>
       </div>
     <% end %>
+
+    <div class="w-75">
+      <%= paginate @posts %>
+    </div>
   </div>
-
-  <%= form_with(url: posts_path, method: :get, local: true, class: 'mb-3') do %>
-    <div class="input-group">
-      <%= text_field_tag :query, params[:query], class: 'form-control', placeholder: 'Search posts...' %>
-      <button type="submit" class="btn btn-outline-secondary">Search</button>
-    </div>
-  <% end %>
-
-  <% @posts.each do |post| %>
-    <div class="card mb-3">
-      <% cache([post, current_user.id]) do %> 
-        <div class="card-body">
-          <h2 class="card-title"><%= link_to post.title, post, class: 'text-decoration-none' %></h2>
-          <p class="card-text"><%= post.body.truncate(100) %></p>
-          <p class="card-subtitle text-muted">By <%= post.user.email %></p>
-        </div>
-      <% end %>
-
-      <% if post.user == current_user %>
-        <div class="card-footer mt-2">
-          <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-warning btn-sm me-2' %>
-          <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-  <%= paginate @posts %>
 </div>
